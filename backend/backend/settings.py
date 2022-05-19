@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    "corsheaders",
     "rest_framework",
     "rest_framework.authtoken",
     "djoser",
@@ -46,10 +47,11 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    "corsheaders.middleware.CorsMiddleware",
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
-    # 'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -137,7 +139,7 @@ AUTH_USER_MODEL = 'authentication.User'
 # CORS HEADERS SETTING
 
 CORS_ORIGIN_ALLOW_ALL = True
-
+CORS_ALLOW_CREDENTIALS = True
 # REST FRAMEWORK SETTINGS
 
 REST_FRAMEWORK = {
@@ -151,16 +153,15 @@ REST_FRAMEWORK = {
 DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "#/api/auth/password/reset/confirm/{uid}/{token}",
     "ACTIVATION_URL": "#/api/auth/activate/{uid}/{token}",
-    "SEND_ACTIVATION_EMAIL": True,
-    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": True,
+    "SEND_ACTIVATION_EMAIL": False,
+    "PASSWORD_CHANGED_EMAIL_CONFIRMATION": False,
 }
 
 SIMPLE_JWT = {
-    'AUTH_HEADER_TYPES': ('JWT',),
+    'AUTH_HEADER_TYPES': ('Token',),
     'ACCESS_TOKEN_LIFETIME': datetime.timedelta(days=7),
     'REFRESH_TOKEN_LIFETIME': datetime.timedelta(days=7),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': False,
     'UPDATE_LAST_LOGIN': False,
-
 }
