@@ -33,7 +33,7 @@ export default class Store {
 	async register(email: string, username: string, password: string, re_password: string) {
 		try {
 			await AuthService.register(username, email, password, re_password)
-			this.login(email, password);
+			await this.login(email, password);
 		} catch (e) {
 			console.log(e)
 		}

@@ -1,9 +1,15 @@
 import React, {createContext} from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
-import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Store from "./store/store";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import PrivateRoute from "./http/PrivateRoute";
+import TestComponent from "./components/TestComponent";
+import PublicRoute from "./http/PublicRoute";
+import LoginForm from "./components/auth/LoginForm";
+import RegisterForm from "./components/auth/RegisterForm";
+import NotFound from "./components/errors/NotFound";
 
 interface State {
   store: Store,
@@ -18,10 +24,22 @@ export const Context = createContext<State>({
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
 root.render(
   <React.StrictMode>
     <Context.Provider value={{ store }}>
-      <App />
+      <BrowserRouter>
+        <Routes>
+          <Route path={"/"} element={<PrivateRoute />}>
+            <Route path={"/"} element={<TestComponent />} />
+          </Route>
+          <Route path={"auth"} element={<PublicRoute />}>
+            <Route path={"login"} element={<LoginForm />} />
+            <Route path={"register"} element={<RegisterForm />} />
+          </Route>
+          <Route path={"*"} element={<NotFound />} />
+        </Routes>
+      </BrowserRouter>
     </Context.Provider>
   </React.StrictMode>
 );

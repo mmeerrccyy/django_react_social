@@ -14,7 +14,7 @@ const LoginForm: FC = () => {
 			<input type="email" onChange={(e) => setEmail(e.target.value)} value={email} placeholder={"Email"}/>
 			<input type="password" onChange={(e) => setPassword(e.target.value)} value={password} placeholder={"Password"}/>
 			<button onClick={() => store.login(email, password)}>Login</button>
-			<button onClick={() => history("/register")}>Register</button>
+			<button onClick={() => history("/auth/register")}>Register</button>
 		</div>
 	)
 }

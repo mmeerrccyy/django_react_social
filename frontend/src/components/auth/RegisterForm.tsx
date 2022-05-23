@@ -18,7 +18,7 @@ const RegisterForm: FC = () => {
       <input type="password" onChange={(e) => setPassword(e.target.value)} value={password} placeholder={"Password"}/>
       <input type="password" onChange={(e) => setRePassword(e.target.value)} value={repassword} placeholder={"Repeat password"}/>
       <button onClick={() => store.register(email, username, password, repassword)}>Register</button>
-      <button onClick={() => history("/")}>Login</button>
+      <button onClick={() => history("/auth/login")}>Login</button>
     </>
   )
 }
