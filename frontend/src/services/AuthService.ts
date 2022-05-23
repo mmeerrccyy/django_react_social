@@ -4,7 +4,7 @@ import {AuthResponseModel, MeResponse, RegisterResponse} from "../models/respons
 
 export default class AuthService {
 	static async login(email: string, password: string): Promise<AxiosResponse<AuthResponseModel>> {
-		return $api.post<AuthResponseModel>("/auth/jwt/create/", {email, password})
+		return $api.post<AuthResponseModel>("/auth/token/login/", {email, password})
 	}
 
 	static async register(username: string, email: string, password: string, re_password: string): Promise<AxiosResponse<RegisterResponse>> {

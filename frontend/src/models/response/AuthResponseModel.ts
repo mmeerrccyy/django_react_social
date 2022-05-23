@@ -1,6 +1,5 @@
 export interface AuthResponseModel {
-	access: string;
-	refresh: string;
+	auth_token: string;
 }
 
 export interface RegisterResponse {
