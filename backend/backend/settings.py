@@ -46,6 +46,7 @@ INSTALLED_APPS = [
 
     "firstapp",
     "authentication",
+    "posts",
 ]
 
 MIDDLEWARE = [

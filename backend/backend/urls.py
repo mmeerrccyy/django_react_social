@@ -15,12 +15,14 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from firstapp.urls import router
+from firstapp.urls import router as firstapp_router
+from posts.urls import router as posts_router
 from .yasg import urlpatterns as doc_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("api/", include(router.urls)),
+    path("api/", include(firstapp_router.urls)),
+    path("api/", include(posts_router.urls)),
     # path("api/auth/",  include('rest_framework.urls')),
     path("api/auth/",  include('djoser.urls')),
     path("api/auth/",  include('djoser.urls.authtoken')),

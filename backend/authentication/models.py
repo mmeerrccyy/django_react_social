@@ -1,3 +1,5 @@
+import uuid
+
 from django.db import models
 
 from django.contrib.auth.models import (
@@ -8,7 +10,6 @@ from django.contrib.auth.models import (
 class UserManager(BaseUserManager):
 
     def create_user(self, username, email, password=None):
-        """ Создает и возвращает пользователя с имэйлом, паролем и именем. """
         if username is None:
             raise TypeError('Users must have a username.')
 
@@ -22,7 +23,6 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, username, email, password):
-        """ Создает и возввращет пользователя с привилегиями суперадмина. """
         if password is None:
             raise TypeError('Superusers must have a password.')
 
@@ -35,6 +35,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     username = models.CharField(db_index=True, max_length=255, unique=True)
     email = models.EmailField(db_index=True, unique=True)
     is_active = models.BooleanField(default=True)
