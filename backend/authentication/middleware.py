@@ -1,5 +1,8 @@
 from django.contrib.auth.models import AnonymousUser
 
+from rest_framework import status
+from rest_framework.response import Response
+
 
 class AuthMiddleware:
     def __init__(self, get_response, *args):
@@ -11,6 +14,6 @@ class AuthMiddleware:
 
     def process_view(self, viewset, view_func, view_args, view_kwargs):
         if type(viewset.request.user) == AnonymousUser:
-            viewset.user = None
+            return Response({"error": "Authorization required!"}, status=status.HTTP_401_UNAUTHORIZED)
         else:
             viewset.user = viewset.request.user
