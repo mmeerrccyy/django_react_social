@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
+import os
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
@@ -43,6 +44,7 @@ INSTALLED_APPS = [
     "djoser",
     "psycopg2",
     "drf_yasg",
+    "channels",
 
     "firstapp",
     "authentication",
@@ -207,4 +209,24 @@ SWAGGER_SETTINGS = {
         },
     },
     'USE_SESSION_AUTH': False
+}
+
+# REDIS
+
+ASGI_APPLICATION = "drivers.asgi.application"
+
+REDIS_USER = os.getenv("REDIS_USER", "redis")
+REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", "")
+REDIS_DATABASE = os.getenv("REDIS_DATABASE", "0")
+REDIS_HOST_1 = f'{REDIS_USER}://:{REDIS_PASSWORD}@{os.environ["REDIS_HOST"]}:{os.environ["REDIS_PORT"]}/{REDIS_DATABASE}'
+
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [REDIS_HOST_1],
+            "capacity": 500,
+            "expiry": 60
+        },
+    }
 }

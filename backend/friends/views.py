@@ -5,8 +5,9 @@ from rest_framework.response import Response
 
 from authentication.middleware import AuthMiddleware
 from authentication.models import User
+from friends import signals
+from friends.serializers import UserSerializer
 from firstapp.paginators import StandardResultsSetPagination
-from .serializers import UserSerializer
 
 
 class FriendsView(viewsets.GenericViewSet):
@@ -37,6 +38,7 @@ class FriendsView(viewsets.GenericViewSet):
                 found_user.followers.remove(self.user.id)
             found_user.save()
             self.user.save()
+            signals.friend_request.send(sender=self.__class__, receiver_user=found_user, follower=self.user)
             return Response(UserSerializer(self.user).data, status=status.HTTP_200_OK)
         if self.user.id in found_user.followers:
             if found_user.id in self.user.following:
