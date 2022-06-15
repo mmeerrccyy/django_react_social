@@ -11,5 +11,5 @@ export interface RegisterResponse {
 export interface MeResponse {
 	email: string;
 	username: string;
-	id: number;
+	id: string;
 }

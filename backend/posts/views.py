@@ -21,14 +21,14 @@ class PostView(viewsets.GenericViewSet):
 
     @action(detail=False, methods=["get"], url_path=r"(?P<user_id>[^/.]+)")
     def users_posts(self, request, user_id):
-        posts = PostModel.objects.filter(user_id=user_id)
+        posts = PostModel.objects.filter(user_id=user_id).order_by("-created_at")
         serialized_data = self.get_serializer_class()(posts, many=True)
         return self.get_paginated_response(self.paginate_queryset(serialized_data.data))
 
     @access_control()
     @action(detail=False, methods=["get"], url_path=r"me")
     def me_posts(self, request):
-        posts = PostModel.objects.filter(author_id=self.user.id)
+        posts = PostModel.objects.filter(author_id=self.user.id).order_by("-created_at")
         serialized_data = self.get_serializer_class()(posts, many=True)
         return self.get_paginated_response(self.paginate_queryset(serialized_data.data))
 

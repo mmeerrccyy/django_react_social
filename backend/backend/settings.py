@@ -9,7 +9,6 @@ https://docs.djangoproject.com/en/4.0/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
-import os
 from datetime import timedelta
 from pathlib import Path
 from decouple import config
@@ -49,6 +48,8 @@ INSTALLED_APPS = [
     "firstapp",
     "authentication",
     "posts",
+    "dialogs",
+    "chat",
 ]
 
 MIDDLEWARE = [
@@ -215,10 +216,12 @@ SWAGGER_SETTINGS = {
 
 ASGI_APPLICATION = "drivers.asgi.application"
 
-REDIS_USER = os.getenv("REDIS_USER", "redis")
-REDIS_PASSWORD = os.getenv("REDIS_PASSWORD", "")
-REDIS_DATABASE = os.getenv("REDIS_DATABASE", "0")
-REDIS_HOST_1 = f'{REDIS_USER}://:{REDIS_PASSWORD}@{os.environ["REDIS_HOST"]}:{os.environ["REDIS_PORT"]}/{REDIS_DATABASE}'
+REDIS_USER = config("REDIS_USER") if config("REDIS_USER") else "redis"
+REDIS_PASSWORD = config("REDIS_PASSWORD") if config("REDIS_PASSWORD") else ""
+REDIS_DATABASE = config("REDIS_DATABASE", "0") if config("REDIS_DATABASE", "0") else "0"
+REDIS_HOST = config("REDIS_HOST")
+REDIS_PORT = config("REDIS_PORT")
+REDIS_HOST_1 = f"{REDIS_USER}://:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}/{REDIS_DATABASE}"
 
 CHANNEL_LAYERS = {
     'default': {

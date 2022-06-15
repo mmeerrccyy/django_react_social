@@ -6,7 +6,7 @@ from rest_framework.response import Response
 from authentication.middleware import AuthMiddleware
 from authentication.models import User
 from friends import signals
-from friends.serializers import UserSerializer
+from friends.serializers import UserSerializer, MyFriendsSerializer
 from firstapp.paginators import StandardResultsSetPagination
 
 
@@ -15,7 +15,8 @@ class FriendsView(viewsets.GenericViewSet):
     access_control = decorator_from_middleware_with_args(AuthMiddleware)
 
     def get_serializer_class(self):
-        pass
+        if self.action in ["friends_me"]:
+            return MyFriendsSerializer
 
     @access_control()
     @action(detail=False, methods=["get"], url_path=r"(?P<user_id>[^/.]+)/follow")
@@ -59,5 +60,11 @@ class FriendsView(viewsets.GenericViewSet):
             found_user.save()
             self.user.save()
             return Response(UserSerializer(self.user).data, status=status.HTTP_200_OK)
+
+
+    @access_control()
+    @action(detail=False, methods=["get"], url_path="me")
+    def friends_me(self, request):
+        return Response(self.get_serializer_class()(self.user).data, status=status.HTTP_200_OK)
 
 

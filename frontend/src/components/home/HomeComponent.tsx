@@ -1,9 +1,11 @@
 import React, {useContext, useEffect} from "react";
 import {observer} from "mobx-react-lite";
-import {Context} from "../index";
-import {useNavigate} from "react-router-dom";
+import {Context} from "../../index";
+import {Routes, Route, useNavigate, Outlet} from "react-router-dom";
+import HeaderComponent from "./HeaderComponent";
+import ProfileComponent from "./profile/ProfileComponent";
 
-function TestComponent() {
+function HomeComponent() {
   const {store} = useContext(Context);
   const history = useNavigate();
   useEffect(() => {
@@ -17,10 +19,9 @@ function TestComponent() {
 
   return (
     <>
-      {store.isAuth ? store.user.username : "Not logged in"}
-      <button onClick={() => store.logout()}>Log out</button>
+      <HeaderComponent />
     </>
   )
 }
 
-export default observer(TestComponent);
+export default observer(HomeComponent);
